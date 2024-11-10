@@ -1,0 +1,43 @@
+@model IEnumerable<PaymentDto>
+@using NonFactors.Mvc.Grid
+@using Taavoni.DTOs
+@using Taavoni.DTOs.Payment
+
+<h2>جزئیات بدهی کاربران</h2>
+<div class="">
+    <a asp-area="Admin" asp-controller="Payment" asp-action="CreatePayment" class="btn btn-primary">اضافه کردن</a>
+</div>
+
+<br>
+@(Html.Grid(Model)
+    .Build(columns =>
+    {
+        columns.Add(model => model.Name).Titled("نام و نام خانوادگی");
+        columns.Add(model => model.DebtId).Titled("شناسه بدهی");
+        columns.Add(model => model.Amount).Titled("مقدار پرداختی");
+        columns.Add(model => model.Description).Titled("توضیحات");
+        columns.Add(model => model.Title).Titled("عنوان");
+       
+       columns.Add(model => model.AttachmentPath)
+    .Titled("پیوست")
+    .RenderedAs(model =>
+    {
+        if (!string.IsNullOrEmpty(model.AttachmentPath))
+        {
+            var relativePath = model.AttachmentPath.Replace("wwwroot/", "");
+            return Html.Raw($"<a href='/{relativePath}' target='_blank'>دانلود</a>");
+        }
+        return Html.Raw("پیوست ندارد");
+    });
+          columns.Add(model => model.UserId).Titled("عملیات")
+          .RenderedAs(model => Html.ActionLink("Edit", "Edit", new {id = model.id})).Encoded(false);
+    })
+    .Filterable(GridFilterCase.Lower)
+    .Using(GridFilterMode.Header)
+    .Empty("داده‌ای یافت نشد")
+    .Pageable(pager =>
+    {
+        pager.RowsPerPage = 10;
+    })
+    .Sortable()
+)
