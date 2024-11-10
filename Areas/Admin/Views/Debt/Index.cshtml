@@ -2,39 +2,95 @@
 @using NonFactors.Mvc.Grid
 @using Taavoni.DTOs
 <h2>جزئیات بدهی کاربران</h2>
-<form asp-action="ApplyDailyPenalty" method="post">
-    <button type="submit" class="btn btn-warning">اعمال جریمه روزانه</button>
-</form>
-<div class="">
-  <a asp-area="Admin" asp-controller="Debt" asp-action="Create"  class="btn btn-primary">اضافه کردن</a>
 
-</div>
 
-<br>
-@(Html
-    .Grid(Model)
-    .Build(columns =>
-    {
-       // columns.Add(model => model.Id).Titled("Name");
-        columns.Add(model => model.Name).Titled("نام و نام خانوادگی");
-        columns.Add(model => model.Guard).Titled("نگهبانی");
-        columns.Add(model => model.DueDate).Titled("تاریخ سررسید");
-        columns.Add(model => model.PenaltyRate.ToString()).Titled("درصد جریمه");
-        columns.Add(model => model.RemainingAmount.ToString()).Titled("مبلغ باقیمانده");
-        
-        columns.Add(model => model.StartDate).Titled("از تاریخ").Formatted("{0:d}");
-        columns.Add(model => model.EndDate).Titled("تا تاریخ").Formatted("{0:d}");
-        columns.Add(model => model.IsPaid).Titled("وضعیت پرداخت");
 
-      columns.Add(model => model.UserId).Titled("عملیات").RenderedAs(model => Html.ActionLink("Edit", "Edit", new {id = model.Id})).Encoded(false);
-    
-    })
-    .Filterable(GridFilterCase.Lower)
-    .Using(GridFilterMode.Header)
-    .Empty("No data found")
-    .Pageable(pager =>
-    {
-        pager.RowsPerPage = 10;
-    })
-    .Sortable()
-)
+<div class="row">
+
+  <div class="col-12">
+    <div class="box">
+      <form asp-action="ApplyDailyPenalty" method="post">
+        <button type="submit" class="btn btn-warning">اعمال جریمه روزانه</button>
+      </form>
+      <div class="">
+        <a asp-area="Admin" asp-controller="Debt" asp-action="Create" class="btn btn-primary">اضافه کردن</a>
+
+      </div>
+
+
+      <div class="box-body">
+        <div class="table-responsive">
+          <table id="example1" class="table table-bordered table-separated editable-table">
+            <thead>
+              <tr>
+                <th>نام</th>
+                <th>تاریخ سررسید</th>
+                <th>نگهبانی</th>
+                <th>درصد جریمه</th>
+                <th>مبلغ باقیمانده</th>
+                <th>از تاریخ </th>
+                <th>تا تاریخ </th>
+                <th>شناسه کاربر</th>
+                <th>نام کاربر</th>
+                <th> عملیات</th>
+              </tr>
+            </thead>
+            <tbody>
+
+
+              @foreach (var item in Model)
+              {
+                <tr>
+
+                  <td>@item.Name</td>
+                  <td>@item.DueDate</td>
+                  <td>@item.Guard</td>
+                  <td>@item.PenaltyRate</td>
+                  <td>@item.RemainingAmount</td>
+                  <td>@item.StartDate</td>
+                  <td>@item.EndDate</td>
+                  <td>@item.UserId</td>
+                  <td>@item.UserName</td>
+                  <td> @Html.ActionLink("Edit", "Edit", new { id = item.Id })</td>
+                </tr>
+              }
+            </tbody>
+            <tfoot>
+              <tr>
+
+            </tfoot>
+          </table>
+        </div>
+      </div>
+
+  <script src="~/assets/vendor_components/jquery-3.3.1/jquery-3.3.1.js"></script>
+	
+	<!-- popper -->
+	<script src="~/assets/vendor_components/popper/dist/popper.min.js"></script>
+	
+	<!-- Bootstrap 4.0-->
+	<script src="~/assets/vendor_components/bootstrap/dist/js/bootstrap.min.js"></script>
+	
+	<!-- SlimScroll -->
+	<script src="~/assets/vendor_components/jquery-slimscroll/jquery.slimscroll.min.js"></script>
+	
+	<!-- FastClick -->
+	<script src="~/assets/vendor_components/fastclick/lib/fastclick.js"></script>
+	
+	<!-- This is data table -->
+    <script src="~/assets/vendor_components/datatable/datatables.min.js"></script>
+	
+	<!-- Editable -->
+    <script src="~/assets/vendor_components/tiny-editable/mindmup-editabletable.js"></script>
+    <script src="~/assets/vendor_components/tiny-editable/numeric-input-example.js"></script>
+	<script src="~/js/pages/editable-tables.js"></script>
+	
+	<!-- Superieur Admin App -->
+	<script src="~/js/template.js"></script>
+	
+	<!-- Superieur Admin for demo purposes -->
+	<script src="~/js/demo.js"></script>
+	
+	<!-- Superieur Admin for Data Table -->
+	<script src="~/js/pages/data-table.js"></script>
+	
